@@ -163,7 +163,7 @@ module.exports = function (grunt) {
             }
         },
         watch: {
-            build: {
+            hint: {
                 files: ['src/**/*'],
                 tasks: ['build']
             }
