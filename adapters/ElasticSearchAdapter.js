@@ -35,20 +35,20 @@ chellSearch.factory('SearchAdapter', [
         });
         return deferred.promise;
       },
-      update: function (result) {
+      update: function (document, type, group) {
         var deferred = $q.defer();
-        $http.put('http://' + host + '/search/result/' + result.id, searchToExternalDocument(result)).success(function (result) {
+        $http.put('http://' + host + '/' + index + '/' + type + '/' + document.id, searchToExternalDocument(document)).success(function (result) {
           deferred.resolve(externalToSearchDocument(result));
         }).error(function () {
           deferred.reject('An error occured while updating result');
         });
         return deferred.promise;
       },
-      remove: function (result) {
+      remove: function (document, type, group) {
         var deferred = $q.defer();
         $http({
           method: 'DELETE',
-          url: 'http://' + host + '/search/result/' + result.id
+          url: 'http://' + host + '/' + index + '/' + type + '/' + document.id
         }).success(function () {
           deferred.resolve();
         }).error(function () {

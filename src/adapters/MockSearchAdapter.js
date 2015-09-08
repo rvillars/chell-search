@@ -24,7 +24,7 @@ chellSearch.factory('SearchAdapter', function ($http, $q, _) {
             });
             return deferred.promise;
         },
-        create: function(document, user, type) {
+        index: function(document, user, type) {
             var deferred = $q.defer();
             $http.post('http://' + host + '/search/' + type, searchToExternalDocument(document, user, type)).success(function (result) {
                 deferred.resolve(externalToSearchDocument(result));

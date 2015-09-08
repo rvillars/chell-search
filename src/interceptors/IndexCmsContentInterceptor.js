@@ -19,3 +19,6 @@ chellSearch.factory('IndexCmsContentInterceptor', function ($rootScope, $q, http
 chellSearch.config(function ($httpProvider) {
     $httpProvider.interceptors.push('IndexCmsContentInterceptor');
 });
+
+// Interceptor -> Type -> Registry -> ResultLayout
+// Directive -> Service -> Adpater -> Interceptor

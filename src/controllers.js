@@ -2,7 +2,8 @@
 
 var chellSearch = angular.module('chell-search');
 
-chellSearch.controller('SearchInputController', function ($scope, $rootScope, SearchService) {
+chellSearch.controller('SearchInputController', function ($scope, $rootScope, SearchService, SearchResultModel) {
+    $scope.model = SearchResultModel;
     $scope.search = function() {
         SearchService.search($scope.model.searchTerm).then(function(results) {
             $scope.model.searchResults = results;
@@ -10,7 +11,8 @@ chellSearch.controller('SearchInputController', function ($scope, $rootScope, Se
     };
 });
 
-chellSearch.controller('SearchResultController', function ($scope, $sce) {
+chellSearch.controller('SearchResultController', function ($scope, $sce, SearchResultModel) {
+    $scope.model = SearchResultModel;
     $scope.highlight = function(text, search) {
         if (!text) {
             return '';

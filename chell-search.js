@@ -30,34 +30,22 @@ chellSearch.service('SearchResultModel', function () {
   this.searchResults = [];
 });;// Source: build/directives.js
 var chellSearch = angular.module('chell-search');
-chellSearch.directive('chellSearchInput', [
-  'SearchResultModel',
-  function (SearchResultModel) {
-    return {
-      restrict: 'E',
-      scope: {},
-      controller: 'SearchInputController',
-      templateUrl: 'templates/search-input.tpl.html',
-      link: function (scope, elem, attr) {
-        scope.model = SearchResultModel;
-      }
-    };
-  }
-]);
-chellSearch.directive('chellSearchResults', [
-  'SearchResultModel',
-  function (SearchResultModel) {
-    return {
-      restrict: 'E',
-      scope: {},
-      controller: 'SearchResultController',
-      templateUrl: 'templates/search-results.tpl.html',
-      link: function (scope, elem, attr) {
-        scope.model = SearchResultModel;
-      }
-    };
-  }
-]);;// Source: build/services.js
+chellSearch.directive('chellSearchInput', function () {
+  return {
+    restrict: 'E',
+    scope: {},
+    controller: 'SearchInputController',
+    templateUrl: 'templates/search-input.tpl.html'
+  };
+});
+chellSearch.directive('chellSearchResults', function () {
+  return {
+    restrict: 'E',
+    scope: {},
+    controller: 'SearchResultController',
+    templateUrl: 'templates/search-results.tpl.html'
+  };
+});;// Source: build/services.js
 var chellSearch = angular.module('chell-search');
 chellSearch.service('IndexService', [
   'SearchAdapter',
@@ -83,7 +71,9 @@ chellSearch.controller('SearchInputController', [
   '$scope',
   '$rootScope',
   'SearchService',
-  function ($scope, $rootScope, SearchService) {
+  'SearchResultModel',
+  function ($scope, $rootScope, SearchService, SearchResultModel) {
+    $scope.model = SearchResultModel;
     $scope.search = function () {
       SearchService.search($scope.model.searchTerm).then(function (results) {
         $scope.model.searchResults = results;
@@ -94,7 +84,9 @@ chellSearch.controller('SearchInputController', [
 chellSearch.controller('SearchResultController', [
   '$scope',
   '$sce',
-  function ($scope, $sce) {
+  'SearchResultModel',
+  function ($scope, $sce, SearchResultModel) {
+    $scope.model = SearchResultModel;
     $scope.highlight = function (text, search) {
       if (!text) {
         return '';
