@@ -16,7 +16,7 @@ chellSearchExample1.controller('ExampleContentController', function ($scope, Ind
     $scope.results = [];
 
     $scope.save = function () {
-        IndexService.index($scope.editDocument, 'ExampleUser', 'Content').then(function(result) {
+        IndexService.index($scope.editDocument, 'content', 'ExampleGroup').then(function(result) {
             $scope.cancel();
             $scope.results.push(result);
         });

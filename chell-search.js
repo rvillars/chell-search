@@ -62,8 +62,8 @@ var chellSearch = angular.module('chell-search');
 chellSearch.service('IndexService', [
   'SearchAdapter',
   function (SearchAdapter) {
-    this.index = function (document, user, type) {
-      return SearchAdapter.create(document, user, type);
+    this.index = function (document, type, group) {
+      return SearchAdapter.index(document, type, group);
     };
   }
 ]);
@@ -96,6 +96,9 @@ chellSearch.controller('SearchResultController', [
   '$sce',
   function ($scope, $sce) {
     $scope.highlight = function (text, search) {
+      if (!text) {
+        return '';
+      }
       if (!search) {
         return $sce.trustAsHtml(text);
       }

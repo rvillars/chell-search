@@ -4,8 +4,8 @@ var chellSearch = angular.module('chell-search');
 
 chellSearch.service('IndexService', function (SearchAdapter) {
 
-    this.index = function (document, user, type) {
-        return SearchAdapter.create(document, user, type);
+    this.index = function (document, type, group) {
+        return SearchAdapter.index(document, type, group);
     };
 
 });

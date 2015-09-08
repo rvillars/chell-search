@@ -11,6 +11,7 @@
     <script type="text/javascript" src="../<%= file %>"></script><% }); %>
 
     <script type="text/javascript" src="../chell-search.js"></script>
+    <!--<script type="text/javascript" src="../adapters/ElasticSearchAdapter.js"></script>-->
     <script type="text/javascript" src="../adapters/MockSearchAdapter.js"></script>
     <script type="text/javascript" src="../adapters/MockSearchMock.js"></script>
     <script type="text/javascript" src="example1.js"></script>
@@ -44,9 +45,9 @@
     <table nclass="table table-striped table-bordered" id="documentDatatable">
         <tbody>
         <tr ng-repeat="result in results">
-            <td ng-bind="result.document.title" width="150px"></td>
+            <td ng-bind="result.document.title" width="250px"></td>
             <td ng-bind="result.creationDate | date:'dd.MM.yyyy'" width="100px"></td>
-            <td ng-bind="result.id" width="100px"></td>
+            <td ng-bind="result.id" width="200px"></td>
             <td ng-bind="result.type" width="100px"></td>
         </tr>
         </tbody>

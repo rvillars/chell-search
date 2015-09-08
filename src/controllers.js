@@ -12,6 +12,9 @@ chellSearch.controller('SearchInputController', function ($scope, $rootScope, Se
 
 chellSearch.controller('SearchResultController', function ($scope, $sce) {
     $scope.highlight = function(text, search) {
+        if (!text) {
+            return '';
+        }
         if (!search) {
             return $sce.trustAsHtml(text);
         }
