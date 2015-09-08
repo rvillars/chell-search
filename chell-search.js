@@ -85,9 +85,8 @@ chellSearch.controller('SearchInputController', [
   'SearchService',
   function ($scope, $rootScope, SearchService) {
     $scope.search = function () {
-      SearchService.search($scope.searchTerm).then(function (results) {
+      SearchService.search($scope.model.searchTerm).then(function (results) {
         $scope.model.searchResults = results;
-        $scope.model.searchTerm = $scope.searchTerm;
       });
     };
   }
@@ -112,7 +111,7 @@ angular.module("templates/search-input.tpl.html", []).run(["$templateCache", fun
     "    <form id=\"searchForm\" name=\"searchForm\" ng-submit=\"search()\">\n" +
     "        <fieldset>\n" +
     "            <div class=\"input-group\">\n" +
-    "                <input type=\"text\" class=\"form-control\" placeholder=\"Search\" name=\"q\" ng-model=\"searchTerm\">\n" +
+    "                <input type=\"text\" class=\"form-control\" placeholder=\"Search\" name=\"q\" ng-model=\"model.searchTerm\">\n" +
     "\n" +
     "                <div class=\"input-group-btn\">\n" +
     "                    <a class=\"btn btn-default\" ng-click=\"search()\"><i class=\"glyphicon glyphicon-search\"></i></a>\n" +

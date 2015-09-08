@@ -4,9 +4,8 @@ var chellSearch = angular.module('chell-search');
 
 chellSearch.controller('SearchInputController', function ($scope, $rootScope, SearchService) {
     $scope.search = function() {
-        SearchService.search($scope.searchTerm).then(function(results) {
+        SearchService.search($scope.model.searchTerm).then(function(results) {
             $scope.model.searchResults = results;
-            $scope.model.searchTerm = $scope.searchTerm;
         });
     };
 });
