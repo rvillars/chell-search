@@ -2,24 +2,26 @@
 
 var chellSearch = angular.module('chell-search');
 
-chellSearch.directive('chellSearchInput', function () {
+chellSearch.directive('chellSearchInput', function (SearchResultModel) {
     return {
         restrict: 'E',
-        scope: {
-
-        },
+        scope: {},
         controller: 'SearchInputController',
-        templateUrl: 'templates/search-input.tpl.html'
+        templateUrl: 'templates/search-input.tpl.html',
+        link: function(scope, elem, attr) {
+            scope.model = SearchResultModel;
+        }
     };
 });
 
-chellSearch.directive('chellSearchResults', function () {
+chellSearch.directive('chellSearchResults', function (SearchResultModel) {
     return {
         restrict: 'E',
-        scope: {
-
-        },
+        scope: {},
         controller: 'SearchResultController',
-        templateUrl: 'templates/search-results.tpl.html'
+        templateUrl: 'templates/search-results.tpl.html',
+        link: function(scope, elem, attr) {
+            scope.model = SearchResultModel;
+        }
     };
 });

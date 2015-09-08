@@ -3,21 +3,15 @@
 var chellSearch = angular.module('chell-search');
 
 chellSearch.controller('SearchInputController', function ($scope, $rootScope, SearchService) {
-
-    $scope.searchTerm = '';
-
     $scope.search = function() {
-        SearchService.search($scope.searchTerm);
+        SearchService.search($scope.searchTerm).then(function(results) {
+            $scope.model.searchResults = results;
+            $scope.model.searchTerm = $scope.searchTerm;
+        });
     };
-
 });
 
-chellSearch.controller('SearchResultController', function ($scope, SearchService, $sce) {
-    $scope.$on('chellSearch:resultsFound', function(event, searchTerm) {
-        $scope.searchResults = SearchService.getResults();
-        $scope.searchTerm = searchTerm;
-    });
-
+chellSearch.controller('SearchResultController', function ($scope, $sce) {
     $scope.highlight = function(text, search) {
         if (!search) {
             return $sce.trustAsHtml(text);
