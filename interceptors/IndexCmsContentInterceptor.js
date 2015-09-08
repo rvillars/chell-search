@@ -1,6 +1,6 @@
 'use strict';
 var chellSearch = angular.module('chell-search');
-chellSearch.factory('CmsSearchInterceptor', [
+chellSearch.factory('IndexCmsContentInterceptor', [
   '$rootScope',
   '$q',
   'httpBuffer',
@@ -11,7 +11,7 @@ chellSearch.factory('CmsSearchInterceptor', [
         if (config.url.indexOf('cms/content') > -1 && (config.method == 'POST' || config.method == 'PUT')) {
           var content = config.data;
           if (content) {
-            console.log('Content indexed: ' + content.title);
+            console.log('Content indexed: ' + content.body);
           }
         }
         return config;
@@ -22,6 +22,6 @@ chellSearch.factory('CmsSearchInterceptor', [
 chellSearch.config([
   '$httpProvider',
   function ($httpProvider) {
-    $httpProvider.interceptors.push('CmsSearchInterceptor');
+    $httpProvider.interceptors.push('IndexCmsContentInterceptor');
   }
 ]);

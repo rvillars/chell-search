@@ -2,13 +2,13 @@
 
 var chellSearch = angular.module('chell-search');
 
-chellSearch.factory('CmsSearchInterceptor', function ($rootScope, $q, httpBuffer, $window) {
+chellSearch.factory('IndexCmsContentInterceptor', function ($rootScope, $q, httpBuffer, $window) {
     return {
         request: function (config) {
             if (config.url.indexOf('cms/content') > -1 && (config.method == 'POST' || config.method == 'PUT')) {
                 var content = config.data;
                 if (content) {
-                    console.log('Content indexed: ' + content.title);
+                    console.log('Content indexed: ' + content.body);
                 }
             }
             return config;
@@ -17,5 +17,5 @@ chellSearch.factory('CmsSearchInterceptor', function ($rootScope, $q, httpBuffer
 });
 
 chellSearch.config(function ($httpProvider) {
-    $httpProvider.interceptors.push('CmsSearchInterceptor');
+    $httpProvider.interceptors.push('IndexCmsContentInterceptor');
 });

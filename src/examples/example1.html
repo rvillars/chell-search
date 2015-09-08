@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html ng-app="chell-search-example1">
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>chell-search Example 1</title>
+
+    <!-- compiled CSS --><% styles.forEach( function ( file ) { %>
+    <link rel="stylesheet" type="text/css" href="../<%= file %>" /><% }); %>
+
+    <!-- compiled JavaScript --><% scripts.forEach( function ( file ) { %>
+    <script type="text/javascript" src="../<%= file %>"></script><% }); %>
+
+    <script type="text/javascript" src="../chell-search.js"></script>
+    <script type="text/javascript" src="../adapters/MockSearchAdapter.js"></script>
+    <script type="text/javascript" src="../adapters/MockSearchMock.js"></script>
+    <script type="text/javascript" src="example1.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="../styles/chell-search.css" />
+
+</head>
+<body>
+<div style="width: 928px; margin: 0 auto;" ng-controller="ExampleContentController">
+
+    <div>
+        <form id="contentForm" name="contentForm" novalidate ng-submit="contentForm.$valid && save()">
+            <fieldset>
+                <div class="row">
+                    <div class="form-group col-md-12 required" ng-class="{ 'has-error' : contentForm.inputTitle.$invalid && !contentForm.inputTitle.$pristine }">
+                        <label for="inputTitle" class="control-label">Title</label>
+                        <input class="form-control" id="inputTitle" name="inputTitle" placeholder="Title" required
+                               ng-model="editDocument.title" autofocus/>
+                        <p ng-show="contentForm.inputTitle.$invalid && !contentForm.inputTitle.$pristine" class="help-block">Title</p>
+                    </div>
+                </div>
+                <textarea ckeditor="editorConfig" ng-model="editDocument.body"></textarea>
+            </fieldset>
+            <button type="submit" class="btn btn-primary" ng-disabled="contentForm.$invalid">Save</button>
+            <button class="btn btn-default" ng-click="cancel()">Cancel</button>
+        </form>
+    </div>
+
+    <br/>
+
+    <table nclass="table table-striped table-bordered" id="documentDatatable">
+        <tbody>
+        <tr ng-repeat="result in results">
+            <td ng-bind="result.document.title" width="150px"></td>
+            <td ng-bind="result.creationDate | date:'dd.MM.yyyy'" width="100px"></td>
+            <td ng-bind="result.id" width="100px"></td>
+            <td ng-bind="result.type" width="100px"></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div style="padding-top: 20px;">
+        <chell-search-input></chell-search-input>
+    </div>
+    <div style="padding-top: 20px;">
+        <chell-search-results></chell-search-results>
+    </div>
+
+</div>
+</body>
+</html>

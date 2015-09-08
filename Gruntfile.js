@@ -11,6 +11,9 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-html2js');
     grunt.loadNpmTasks('grunt-ngmin');
+    grunt.loadNpmTasks('grunt-karma');
+    grunt.loadNpmTasks('grunt-angular-translate');
+    grunt.loadNpmTasks('grunt-json-angular-translate');
 
     /**
      * Load in our build configuration file.
@@ -67,7 +70,7 @@ module.exports = function (grunt) {
                         src: [ '<%= module_files %>' ],
                         dest: 'build',
                         expand: true,
-                        flatten: true
+                        flatten: false
                     }
                 ]
             },
@@ -77,17 +80,6 @@ module.exports = function (grunt) {
                         cwd: 'src',
                         src: [ '<%= module_adapters %>' ],
                         dest: 'adapters',
-                        expand: true,
-                        flatten: true
-                    }
-                ]
-            },
-            interceptors: {
-                files: [
-                    {
-                        cwd: 'src',
-                        src: [ '<%= module_interceptors %>' ],
-                        dest: 'interceptors',
                         expand: true,
                         flatten: true
                     }
@@ -161,8 +153,35 @@ module.exports = function (grunt) {
                     base: 'src',
                     module: 'templates-<%= pkg.name %>'
                 },
-                src: [ 'src/templates/**/*.tpl.html' ],
+                src: [ 'src/**/*.tpl.html' ],
                 dest: 'build/templates.js'
+            }
+        },
+        i18nextract: {
+            default_options: {
+                src: [ 'src/*.js', 'src/**/*.tpl.html' ],
+                lang: ['en'],
+                prefix: 'locale-',
+                dest: 'src/i18n',
+                namespace: true,
+                nullEmpty: true,
+                safeMode: true
+            }
+        },
+        jsonAngularTranslate: {
+            jobName: {
+                options: {
+                    moduleName: 'translations'
+                },
+                files: [
+                    {
+                        expand: true,
+                        cwd: 'src/i18n',
+                        src: '*.json',
+                        dest: 'build',
+                        ext: '.js'
+                    }
+                ]
             }
         },
         watch: {
@@ -170,12 +189,46 @@ module.exports = function (grunt) {
                 files: ['src/**/*'],
                 tasks: ['build']
             }
+        },
+        karma: {
+            unit: {
+                options: {
+                    files: [
+                        '<%= module_dependencies.js %>',
+                        '<%= pkg.name %>.js',
+                        'adapters/ElasticSearchCmsAdapter.js',
+                        'adapters/MockCmsMock.js',
+                        'tests/*.js'
+                    ],
+                    frameworks: [
+                        'jasmine'
+                    ],
+                    singleRun: true,
+                    autoWatch: false,
+                    browsers: ['PhantomJS'],
+                    logLevel: 'INFO'
+                }
+            }
         }
     };
 
     grunt.initConfig(grunt.util._.extend(taskConfig, userConfig));
 
-    grunt.registerTask('build', ['jshint', 'ngmin', 'html2js:build', 'concat', 'uglify:src', 'copy', 'less:build']);
+    grunt.registerTask('build', ['jshint', 'ngmin', 'html2js:build', 'i18nextract', 'jsonAngularTranslate', 'concat', 'uglify:src', 'copy', 'less:build', 'example']);
     grunt.registerTask('default', ['watch:hint']);
+
+    grunt.registerTask('example', 'Process example .html template', function () {
+        grunt.file.copy('src/examples/example1.html', 'examples/example1.html', {
+            process: function (contents, path) {
+                return grunt.template.process(contents, {
+                    data: {
+                        scripts: userConfig.module_dependencies.js,
+                        styles: userConfig.module_dependencies.css
+                    }
+                });
+            }
+        });
+        grunt.file.copy('src/examples/example1.js', 'examples/example1.js');
+    });
 
 };

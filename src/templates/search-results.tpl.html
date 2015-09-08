@@ -1,0 +1,16 @@
+<div ng-repeat="result in searchResults">
+    <article class="search-result row">
+        <div class="col-xs-12 col-sm-12 col-md-10 excerpet">
+            <h4><a href="#" title=""><div ng-bind-html="highlight(result.document.title, searchTerm)"></div></a></h4>
+            <p ng-bind-html="highlight(result.document.body, searchTerm)"></p>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-2">
+            <ul class="meta-search">
+                <li><i class="glyphicon glyphicon-calendar"></i> <span>{{result.creationDate | date:'dd.MM.yyyy'}}</span></li>
+                <li><i class="glyphicon glyphicon-user"></i> <span ng-bind-html="highlight(result.accessRights, searchTerm)"></span></li>
+                <li><i class="glyphicon glyphicon-file"></i> <span ng-bind-html="highlight(result.type, searchTerm)"></span></li>
+            </ul>
+        </div>
+        <span class="clearfix borda"></span>
+    </article>
+</div>

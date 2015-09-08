@@ -1,83 +1,80 @@
 'use strict';
 var chellSearch = angular.module('chell-search');
 var host = 'undefined';
-var result0 = {
-    id: 0,
-    title: 'Welcome Page',
-    creationDate: new Date(),
-    accessRights: 'User',
-    status: 'approved',
-    body: '<h1>A welcome page</h1>'
-  };
-var result1 = {
-    id: 1,
-    title: 'Help Text',
-    creationDate: new Date(),
-    accessRights: 'User',
-    status: 'draft',
-    body: '<h1>A help text</h1>'
-  };
-var mockResult = [
-    result0,
-    result1
-  ];
 chellSearch.factory('SearchAdapter', [
   '$http',
   '$q',
   '_',
   function ($http, $q, _) {
     return {
-      getContentList: function () {
+      getDocumentList: function () {
         var deferred = $q.defer();
-        $http.get('http://' + host + '/search/result').success(function (result) {
-          deferred.resolve(_.map(result, externalToSearchContent));
+        $http.get('http://' + host + '/search/').success(function (result) {
+          deferred.resolve(_.map(result, externalToSearchDocument));
         }).error(function () {
           deferred.reject('An error occured while fetching search result list');
         });
         return deferred.promise;
       },
       getContent: function (id) {
-        return mockResult[id];
+        var deferred = $q.defer();
+        $http.get('http://' + host + '/search/result' + id).success(function (result) {
+          deferred.resolve(_.map(result, externalToSearchDocument));
+        }).error(function () {
+          deferred.reject('An error occured while fetching search result list');
+        });
+        return deferred.promise;
       },
-      create: function (result) {
-        result.id = mockResult.length;
-        result.creationDate = new Date();
-        mockResult.push(result);
-        return mockResult[result.id];
+      create: function (document, user, type) {
+        var deferred = $q.defer();
+        $http.post('http://' + host + '/search/' + type, searchToExternalDocument(document, user, type)).success(function (result) {
+          deferred.resolve(externalToSearchDocument(result));
+        }).error(function () {
+          deferred.reject('An error occured while updating result');
+        });
+        return deferred.promise;
       },
       update: function (result) {
-        mockResult[result.id] = result;
-        return mockResult[result.id];
+        var deferred = $q.defer();
+        $http.put('http://' + host + '/search/result/' + result.id, searchToExternalDocument(result)).success(function (result) {
+          deferred.resolve(externalToSearchDocument(result));
+        }).error(function () {
+          deferred.reject('An error occured while updating result');
+        });
+        return deferred.promise;
       },
       remove: function (result) {
-        mockResult.splice(result.id, 1);
+        var deferred = $q.defer();
+        $http({
+          method: 'DELETE',
+          url: 'http://' + host + '/search/result/' + result.id
+        }).success(function () {
+          deferred.resolve();
+        }).error(function () {
+          deferred.reject('An error occured while deleting result');
+        });
+        return deferred.promise;
+      },
+      search: function (searchTerm) {
+        var deferred = $q.defer();
+        $http.get('http://' + host + '/search?q=' + searchTerm).success(function (result) {
+          deferred.resolve(_.map(result, externalToSearchDocument));
+        }).error(function () {
+          deferred.reject('An error occured while fetching search result list');
+        });
+        return deferred.promise;
       }
     };
   }
 ]);
-var externalToSearchContent = function (externalContent) {
-  var searchContent = externalContent;
-  return searchContent;
+var externalToSearchDocument = function (externalDocument) {
+  var searchDocument = externalDocument;
+  return searchDocument;
 };
-var searchToExternalContent = function (searchContent) {
-  var externalContent = searchContent;
-  return externalContent;
+var searchToExternalDocument = function (searchDocument, user, type) {
+  var externalDocument = {};
+  externalDocument.accessRights = user;
+  externalDocument.type = type;
+  externalDocument.document = searchDocument;
+  return externalDocument;
 };
-chellSearch.run([
-  '$httpBackend',
-  '$base64',
-  function ($httpBackend, $base64) {
-    var authenticated = function (headers) {
-      if (headers.Authorization == 'Basic ' + $base64.encode('chellAdmin' + ':' + 'chellAdmin') || headers.Authorization == 'Basic ' + $base64.encode('chellUser' + ':' + 'chellUser')) {
-        return true;
-      }
-      return false;
-    };
-    $httpBackend.whenGET(/search\/result/).respond(function (method, url, data, headers) {
-      return authenticated(headers) ? [
-        200,
-        mockResult
-      ] : [401];
-    });
-  }
-]);
