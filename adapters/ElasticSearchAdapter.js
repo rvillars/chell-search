@@ -72,6 +72,7 @@ var externalToSearchDocument = function (externalDocument) {
   var searchDocument = {};
   searchDocument.id = externalDocument._id;
   searchDocument.type = externalDocument._type;
+  searchDocument.version = externalDocument._version;
   searchDocument.creationDate = externalDocument._timestamp;
   searchDocument.document = externalDocument._source;
   return searchDocument;

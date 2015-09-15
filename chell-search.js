@@ -128,8 +128,8 @@ angular.module("templates/search-results.tpl.html", []).run(["$templateCache", f
     "        <div class=\"col-xs-12 col-sm-12 col-md-2\">\n" +
     "            <ul class=\"meta-search\">\n" +
     "                <li><i class=\"glyphicon glyphicon-calendar\"></i> <span>{{result.creationDate | date:'dd.MM.yyyy'}}</span></li>\n" +
-    "                <li><i class=\"glyphicon glyphicon-user\"></i> <span ng-bind-html=\"highlight(result.accessRights, model.searchTerm)\"></span></li>\n" +
-    "                <li><i class=\"glyphicon glyphicon-file\"></i> <span ng-bind-html=\"highlight(result.type, model.searchTerm)\"></span></li>\n" +
+    "                <li><i class=\"glyphicon glyphicon-file\"></i> <span ng-bind-html=\"result.version\"></span></li>\n" +
+    "                <li><i class=\"glyphicon glyphicon-tag\"></i> <span ng-bind-html=\"highlight(result.type, model.searchTerm)\"></span></li>\n" +
     "            </ul>\n" +
     "        </div>\n" +
     "        <span class=\"clearfix borda\"></span>\n" +
