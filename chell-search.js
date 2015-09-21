@@ -33,7 +33,7 @@ var chellSearch = angular.module('chell-search');
 chellSearch.directive('chellSearchInput', function () {
   return {
     restrict: 'E',
-    scope: {},
+    scope: { searchButtonHook: '&?' },
     controller: 'SearchInputController',
     templateUrl: 'templates/search-input.tpl.html'
   };
@@ -78,6 +78,7 @@ chellSearch.controller('SearchInputController', [
       SearchService.search($scope.model.searchTerm).then(function (results) {
         $scope.model.searchResults = results;
       });
+      $scope.searchButtonHook();
     };
   }
 ]);

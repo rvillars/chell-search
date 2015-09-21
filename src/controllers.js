@@ -8,6 +8,7 @@ chellSearch.controller('SearchInputController', function ($scope, $rootScope, Se
         SearchService.search($scope.model.searchTerm).then(function(results) {
             $scope.model.searchResults = results;
         });
+        $scope.searchButtonHook();
     };
 });
 
