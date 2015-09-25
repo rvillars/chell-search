@@ -1,3 +1,7 @@
+<hgroup class="mb20">
+    <h1>Search Results</h1>
+    <h2 ng-show="model.searchResultsTerm" class="lead"><strong style="color: #428bca">{{model.searchResultsCount}}</strong> results were found for the search for <strong style="color: #428bca">{{model.searchResultsTerm}}</strong></h2>
+</hgroup>
 <div ng-repeat="result in model.searchResults">
     <article class="search-result row">
         <div class="col-xs-12 col-sm-12 col-md-10 excerpet">

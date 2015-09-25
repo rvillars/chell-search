@@ -28,6 +28,8 @@ var chellSearch = angular.module('chell-search');
 chellSearch.service('SearchResultModel', function () {
   this.searchTerm = '';
   this.searchResults = [];
+  this.searchResultsTerm = null;
+  this.searchResultsCount = 0;
 });;// Source: build/directives.js
 var chellSearch = angular.module('chell-search');
 chellSearch.directive('chellSearchInput', function () {
@@ -77,7 +79,9 @@ chellSearch.controller('SearchInputController', [
     $scope.search = function () {
       SearchService.search($scope.model.searchTerm).then(function (results) {
         $scope.model.searchResults = results;
+        $scope.model.searchResultsCount = results.length;
       });
+      $scope.model.searchResultsTerm = $scope.model.searchTerm;
       $scope.searchButtonHook();
     };
   }
@@ -120,6 +124,10 @@ angular.module("templates/search-input.tpl.html", []).run(["$templateCache", fun
 
 angular.module("templates/search-results.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("templates/search-results.tpl.html",
+    "<hgroup class=\"mb20\">\n" +
+    "    <h1>Search Results</h1>\n" +
+    "    <h2 ng-show=\"model.searchResultsTerm\" class=\"lead\"><strong style=\"color: #428bca\">{{model.searchResultsCount}}</strong> results were found for the search for <strong style=\"color: #428bca\">{{model.searchResultsTerm}}</strong></h2>\n" +
+    "</hgroup>\n" +
     "<div ng-repeat=\"result in model.searchResults\">\n" +
     "    <article class=\"search-result row\">\n" +
     "        <div class=\"col-xs-12 col-sm-12 col-md-10 excerpet\">\n" +
